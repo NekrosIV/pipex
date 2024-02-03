@@ -9,7 +9,7 @@ OBJS = $(SRCS:.c=.o)
 
 
 
-HEADERS = ./include/push_swap.h
+HEADERS = ./include/pipex.h
 
 # COLOR #
 GREEN	= \033[38;5;76m
