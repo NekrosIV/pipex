@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 13:17:24 by kasingh           #+#    #+#             */
-/*   Updated: 2024/01/29 13:20:37 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/05 13:53:57 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <wait.h>
 
 #endif
