@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:58:33 by kasingh           #+#    #+#             */
-/*   Updated: 2024/02/07 15:25:24 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:06:59 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,14 @@ void	excute(char **cmd, char **env)
 		ft_putstr_fd("command not found: ", 2);
 		ft_putendl_fd(cmd[0], 2);
 		free_split(cmd);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
+	ft_putstr_fd("command not found: ", 2);
+	ft_putendl_fd(cmd[0], 2);
 	execve(path, cmd, env);
+	free_split(cmd);
+	free(path);
+	exit(127);
 }
 
 void	child(int pipe_fd[2], char **av, char **env)
@@ -173,7 +178,9 @@ void	child2(int pipe_fd[2], char **av, char **env)
 int	main(int ac, char **av, char **env)
 {
 	int		pipe_fd[2];
+	int		status;
 	pid_t	pid;
+	pid_t	pid2;
 
 	if (ac != 5 || pipe(pipe_fd) == -1)
 		return (1);
@@ -184,15 +191,17 @@ int	main(int ac, char **av, char **env)
 		child(pipe_fd, av, env);
 	else
 	{
-		pid = fork();
-		if (pid == -1)
+		pid2 = fork();
+		if (pid2 == -1)
 			return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
-		if (pid == 0)
+		if (pid2 == 0)
 			child2(pipe_fd, av, env);
-		while (waitpid(pid, NULL, WNOHANG) > 0)
-			;
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
+		waitpid(pid, NULL, 0);
+		waitpid(pid2, &status, 0);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
 	}
 	return (0);
 }
