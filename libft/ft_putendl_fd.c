@@ -6,24 +6,18 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:21:16 by kasingh           #+#    #+#             */
-/*   Updated: 2023/11/17 10:41:37 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/08 17:28:39 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <unistd.h>
 
 /* ft_putendl_fd: Affiche une chaîne suivie d'un saut de
 ligne sur un descripteur de fichier */
 void	ft_putendl_fd(char *s, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
+	write(fd, s, ft_strlen(s));
 	write(fd, "\n", 1);
 }
 
