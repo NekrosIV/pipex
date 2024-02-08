@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:58:33 by kasingh           #+#    #+#             */
-/*   Updated: 2024/02/07 17:06:59 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/08 17:23:58 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,13 @@ char	*get_path(char **cmd, char **env, char **path)
 	free_split(path);
 	return (good_path);
 }
+void	error_msg(char *path, char **cmd)
+{
+	ft_putstr_fd("command not found: ", 2);
+	ft_putendl_fd(cmd[0], 2);
+	free_split(cmd);
+	exit(127);
+}
 
 void	excute(char **cmd, char **env)
 {
@@ -101,17 +108,9 @@ void	excute(char **cmd, char **env)
 	}
 	path = get_path(cmd, env, tmp_path);
 	if (!path)
-	{
-		ft_putstr_fd("command not found: ", 2);
-		ft_putendl_fd(cmd[0], 2);
-		free_split(cmd);
-		exit(127);
-	}
-	ft_putstr_fd("command not found: ", 2);
-	ft_putendl_fd(cmd[0], 2);
+		error_msg(path, cmd);
 	execve(path, cmd, env);
-	free_split(cmd);
-	free(path);
+	error_msg(path, cmd);
 	exit(127);
 }
 
@@ -124,7 +123,7 @@ void	child(int pipe_fd[2], char **av, char **env)
 	fd_in = open(av[1], O_RDONLY);
 	if (fd_in == -1)
 	{
-		perror("Error opening file");
+		perror(av[1]);
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(fd_in, STDIN_FILENO) == -1)
@@ -154,7 +153,7 @@ void	child2(int pipe_fd[2], char **av, char **env)
 	fd_out = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_out == -1)
 	{
-		perror("Error opening file");
+		perror(av[4]);
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
@@ -179,8 +178,9 @@ int	main(int ac, char **av, char **env)
 {
 	int		pipe_fd[2];
 	int		status;
+	int		status_bis;
+	pid_t	r_waitpid;
 	pid_t	pid;
-	pid_t	pid2;
 
 	if (ac != 5 || pipe(pipe_fd) == -1)
 		return (1);
@@ -191,17 +191,23 @@ int	main(int ac, char **av, char **env)
 		child(pipe_fd, av, env);
 	else
 	{
-		pid2 = fork();
-		if (pid2 == -1)
+		pid = fork();
+		if (pid == -1)
 			return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
-		if (pid2 == 0)
+		if (pid == 0)
 			child2(pipe_fd, av, env);
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		waitpid(pid, NULL, 0);
-		waitpid(pid2, &status, 0);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
+		while (1)
+		{
+			r_waitpid = waitpid(-1, &status, WNOHANG);
+			if (r_waitpid == pid)
+				status_bis = status;
+			if (r_waitpid > 0)
+				break ;
+		}
+		if (WIFEXITED(status_bis))
+			return (WEXITSTATUS(status_bis));
 	}
 	return (0);
 }
