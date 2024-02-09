@@ -6,40 +6,11 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:58:33 by kasingh           #+#    #+#             */
-/*   Updated: 2024/02/08 17:23:58 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/09 12:20:36 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
-
-// int	main(int ac, char **av, char **env)
-// {
-// 	int		pipe_fd[2];
-// 	pid_t	pid;
-
-// 	if (ac != 3 || pipe(pipe_fd) == -1)
-// 		return (-1);
-// 	if (open(av[1], O_RDONLY) < 0)
-// 		return (ft_printf("error\n"), -1);
-// 	pid = fork();
-// 	if (pid == -1)
-// 		return (-1);
-// 	if (pid != 0)
-// 	{
-// 		close(pipe_fd[0]);
-// 		dup2(pipe_fd[1], 1);
-// 		close(pipe_fd[1]);
-// 		execve(av[1], &av[1], env);
-// 	}
-// 	else
-// 	{
-// 		close(pipe_fd[1]);
-// 		dup2(pipe_fd[0], 0);
-// 		close(pipe_fd[0]);
-// 		execve(av[2], &av[2], env);
-// 	}
-
-// }
 
 void	free_split(char **split)
 {
@@ -87,6 +58,7 @@ void	error_msg(char *path, char **cmd)
 	ft_putstr_fd("command not found: ", 2);
 	ft_putendl_fd(cmd[0], 2);
 	free_split(cmd);
+	free(path);
 	exit(127);
 }
 
@@ -111,20 +83,30 @@ void	excute(char **cmd, char **env)
 		error_msg(path, cmd);
 	execve(path, cmd, env);
 	error_msg(path, cmd);
-	exit(127);
+}
+char	**get_cmd(char *cmd)
+{
+	char	**cmd_split;
+
+	cmd_split = ft_split(cmd, ' ');
+	if (!cmd_split)
+	{
+		perror("Error getting command");
+		exit(EXIT_FAILURE);
+	}
+	return (cmd_split);
 }
 
 void	child(int pipe_fd[2], char **av, char **env)
 {
-	int		fd_in;
-	char	**cmd;
+	int	fd_in;
 
 	close(pipe_fd[0]);
 	fd_in = open(av[1], O_RDONLY);
 	if (fd_in == -1)
 	{
 		perror(av[1]);
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	if (dup2(fd_in, STDIN_FILENO) == -1)
 	{
@@ -138,16 +120,12 @@ void	child(int pipe_fd[2], char **av, char **env)
 		exit(EXIT_FAILURE);
 	}
 	close(pipe_fd[1]);
-	cmd = ft_split(av[2], ' ');
-	if (!cmd)
-		exit(EXIT_FAILURE);
-	excute(cmd, env);
+	excute(get_cmd(av[2]), env);
 }
 
 void	child2(int pipe_fd[2], char **av, char **env)
 {
-	int		fd_out;
-	char	**cmd;
+	int	fd_out;
 
 	close(pipe_fd[1]);
 	fd_out = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -168,19 +146,15 @@ void	child2(int pipe_fd[2], char **av, char **env)
 		exit(EXIT_FAILURE);
 	}
 	close(pipe_fd[0]);
-	cmd = ft_split(av[3], ' ');
-	if (!cmd)
-		exit(EXIT_FAILURE);
-	excute(cmd, env);
+	excute(get_cmd(av[3]), env);
 }
 
 int	main(int ac, char **av, char **env)
 {
 	int		pipe_fd[2];
-	int		status;
-	int		status_bis;
-	pid_t	r_waitpid;
 	pid_t	pid;
+	pid_t	r_waitpid;
+	int		status[2];
 
 	if (ac != 5 || pipe(pipe_fd) == -1)
 		return (1);
@@ -189,25 +163,17 @@ int	main(int ac, char **av, char **env)
 		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
 	if (pid == 0)
 		child(pipe_fd, av, env);
-	else
-	{
-		pid = fork();
-		if (pid == -1)
-			return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
-		if (pid == 0)
-			child2(pipe_fd, av, env);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		while (1)
-		{
-			r_waitpid = waitpid(-1, &status, WNOHANG);
-			if (r_waitpid == pid)
-				status_bis = status;
-			if (r_waitpid > 0)
-				break ;
-		}
-		if (WIFEXITED(status_bis))
-			return (WEXITSTATUS(status_bis));
-	}
+	pid = fork();
+	if (pid == -1)
+		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
+	if (pid == 0)
+		child2(pipe_fd, av, env);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	while ((r_waitpid = waitpid(-1, &status[0], 0)) > 0)
+		if (r_waitpid == pid)
+			status[1] = status[0];
+	if (WIFEXITED(status[1]))
+		return (WEXITSTATUS(status[1]));
 	return (0);
 }
