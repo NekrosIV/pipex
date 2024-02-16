@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 13:17:24 by kasingh           #+#    #+#             */
-/*   Updated: 2024/02/16 13:31:41 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/16 17:48:09 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 void	free_split(char **split);
 void	error_msg(char *path, char **cmd);
 char	**get_cmd(char *cmd);
-char	*get_path(char **cmd, char **env, char **path);
+char	*get_path(char **cmd, char **path);
 void	excute(char **cmd, char **env);
 
 int		flag_out(int flag);

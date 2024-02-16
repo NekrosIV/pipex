@@ -2,7 +2,7 @@ NAME = pipex
 BONUS_NAME = pipex_bonus
 LIBFTNAME = libft.a
 CC = cc
-CFLAGS = -g3
+CFLAGS = -Wall -Wextra -Werror 
 LIBFTDIR = ./libft
 
 SRCS = ./src/pipex.c ./src/pipex_utils.c
@@ -25,7 +25,7 @@ BLUE	= \033[38;5;117m
 INDI	= \033[38;5;99m
 RESET	= \033[00m
 
-all: $(NAME) $(BONUS_NAME)
+all: $(NAME)
 
 
 $(NAME): $(OBJS)

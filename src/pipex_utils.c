@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:15:11 by kasingh           #+#    #+#             */
-/*   Updated: 2024/02/16 13:25:06 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/16 17:49:23 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**get_cmd(char *cmd)
 	return (cmd_split);
 }
 
-char	*get_path(char **cmd, char **env, char **path)
+char	*get_path(char **cmd, char **path)
 {
 	int		i;
 	char	*good_path;
@@ -107,7 +107,7 @@ void	excute(char **cmd, char **env)
 			tmp_path = ft_split(&env[i][5], ':');
 		if (!tmp_path)
 			error_msg(path, cmd);
-		path = get_path(cmd, env, tmp_path);
+		path = get_path(cmd, tmp_path);
 	}
 	if (!path)
 		error_msg(path, cmd);

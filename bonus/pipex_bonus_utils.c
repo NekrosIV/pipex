@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:26:12 by kasingh           #+#    #+#             */
-/*   Updated: 2024/02/16 13:28:16 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/16 17:47:59 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	loop_here_doc(char *tmp, char **av, int fd)
 int	here_doc(char **av)
 {
 	int		fd;
-	char	*line;
 	char	*tmp;
 
 	fd = open(av[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
