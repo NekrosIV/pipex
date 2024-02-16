@@ -1,15 +1,18 @@
 NAME = pipex
+BONUS_NAME = pipex_bonus
 LIBFTNAME = libft.a
 CC = cc
-CFLAGS =  
+CFLAGS = -g3
 LIBFTDIR = ./libft
 
 SRCS = ./src/pipex.c
+BONUS_SRCS = bonus/pipex_bonus.c 
 OBJS = $(SRCS:.c=.o)
+BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
 
 
-HEADERS = ./include/pipex.h
+HEADERS = ./include
 
 # COLOR #
 GREEN	= \033[38;5;76m
@@ -22,7 +25,53 @@ BLUE	= \033[38;5;117m
 INDI	= \033[38;5;99m
 RESET	= \033[00m
 
-all: $(NAME)
+all: $(NAME) $(BONUS_NAME)
+
+
+$(NAME): $(OBJS)
+	@make -C $(LIBFTDIR)
+	@$(CC) $(CFLAGS) -I$(HEADERS) -o $@ $(OBJS) -L ${LIBFTDIR} -lft
+	@printf "$(BLUE)\n\n\n"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢟⣛⣭⣵⣶⣶⣬⣭⣭⣭⣝⡛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣫⣵⣾⣿⣿⣿⣿⣿⣿⣿⡿⣏⢻⣟⢿⣷⣬⡙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⣿⣿⣿⣿⡿⢫⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣜⡜⣿⣆⢿⡜⣿⣎⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⣿⣿⣿⠟⣴⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣿⡎⣿⢸⡟⣾⢿⡎⢻⣧⡹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⣿⣿⠏⣼⣿⣿⢡⣹⡟⣿⣿⣿⡿⠟⠛⠋⠉⠁⠀⠀⠉⠈⠁⠙⠘⠇⢠⣿⣧⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⣿⠇⣼⣿⣿⣿⣾⢿⣷⠙⠋⠁⠀⠀⠀⠀⠀⢀⣀⣠⣤⣤⣴⣶⣶⣶⡶⢲⣶⣶⣬⣭⣟⣛⣿⢛⣭⣛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⡿⢸⣿⡟⣿⡆⠿⠂⠀⠀⠀⣀⣀⣤⣴⣶⣿⣿⣿⣿⣿⣿⣿⠿⠋⠁⣴⣿⣟⣖⣉⠻⠿⣿⡇⣾⣿⣿⣷⡝⢿⣿⣿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⡇⣾⣿⣧⢻⠏⠀⢀⣠⣴⣿⣏⣥⡾⠾⢉⣛⠛⠛⠉⠉⠁⠀⠀⠐⠛⠉⠙⠋⠋⠩⣝⣳⣾⡇⣿⣿⣿⣿⣿⢠⣝⢿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⡇⣿⣿⣿⠇⣠⡶⢋⣡⣤⠏⠉⢁⣴⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣷⣦⣿⣿⠧⢻⣿⣿⣿⣿⡄⣿⣆⢻⣿⣿⣿⣿"
+	@echo "⣿⣿⣿⡘⢋⣵⣾⣿⡿⠛⠉⠀⠀⠀⣼⣿⣿⣿⣿⣿⣷⡀⠀⣦⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⡛⢉⢷⡄⢻⣿⣿⡿⠇⡿⡇⠀⣿⣿⣿⣿"
+	@echo "⣿⡿⢋⣴⣿⠿⠋⠉⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣷⡀⢸⣷⡀⠀⠀⠀⠀⠀⠀⠀⢀⡈⠈⢣⢿⠠⣤⠩⣶⡆⣇⣠⠀⣿⣿⣿⣿"
+	@echo "⢋⡴⣫⢉⠄⠀⠀⠀⠀⠀⠀⣼⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣧⢸⠿⢛⣀⠘⣄⠀⠀⠀⠀⠈⠻⡟⢺⡼⡇⣿⡀⢙⣇⢿⡟⣼⣿⣿⣿⣿"
+	@echo "⣫⡾⠛⠁⠀⣴⠀⠀⠀⠀⠀⣟⡂⡻⠿⣿⣿⣿⣿⣿⣿⣿⣋⣴⣾⠿⢿⠆⢿⡄⠀⠀⠀⠐⣦⣄⡸⢱⡇⣿⠀⠀⠹⠈⢼⣿⣿⣿⣿⣿"
+	@echo "⣿⢃⢂⢊⣾⡇⠀⠀⠀⡄⢰⣿⣧⣿⣿⣶⣶⣿⣟⢻⣿⣿⣿⠋⢁⢤⡤⠂⣸⠿⠀⡆⠀⠌⠈⡿⠡⠟⣃⣭⣶⣾⣿⣷⣶⣍⡻⢿⣿⣿"
+	@echo "⢁⣶⠟⢺⡏⠀⠀⠀⠀⣷⢸⡟⢋⣩⣄⣉⢹⣿⣿⣾⣿⣿⣿⣷⣯⣄⡲⠖⠩⢂⢲⡇⠉⠘⡧⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⢙⣿"
+	@echo "⢸⣩⢘⢸⡇⢠⢇⣤⠀⢿⣿⢷⣿⣿⣿⣿⣿⣿⣿⣦⣉⡿⠿⠟⣛⣭⣦⣾⣷⣿⢸⡇⠸⣣⢀⠀⣦⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢸⣿"
+	@echo "⣦⢻⣸⣼⡱⣿⡄⣤⠀⢸⣿⠰⠆⣍⢉⣭⣭⣭⣭⣴⣶⣶⣿⣿⣿⣿⣿⣿⢟⡁⣸⡇⠞⠁⠘⣤⡿⠿⠟⣛⣭⣭⣶⣾⣿⣿⣿⣅⣿⣿"
+	@echo "⣾⣀⠿⣅⣉⢾⣧⢻⡁⠀⢿⡇⢦⣿⣿⣿⣿⣿⡿⠿⢟⣛⣻⣭⣭⣭⣭⣁⣌⢠⡿⢠⣖⡄⣄⠀⠁⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⠻"
+	@echo "⠰⢭⣓⠦⣭⣥⠙⣧⣙⠦⡌⢿⡄⠙⠗⢙⣭⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡿⣣⡞⢁⠸⠟⣽⡏⢸⢀⢰⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀"
+	@echo "⣿⣶⣬⣭⣙⣛⣛⣛⣛⣓⡲⣌⠻⣦⡘⢾⣿⣿⣿⣿⣿⣿⣿⡿⠛⠛⣩⠞⠉⣠⣿⣿⣳⢷⣷⠈⠻⠾⠈⢟⣛⣛⣋⣿⣿⣿⣿⣿⣿⣦"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠈⠙⠲⠬⣭⣉⣙⣋⣠⣭⠴⠶⠋⠁⢠⣾⡿⣿⣿⣏⣿⠃⠀⠸⡇⢠⢹⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⣾⣷⣶⣶⠤⠀⠀⠶⡀⢀⠄⢠⢿⣟⣴⣿⡿⣼⠃⠀⠀⠀⠈⡉⢘⠛⣛⣫⣤⣶⣿⣿⣿⡟⣿"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠻⣟⣛⠿⣦⣤⣠⡄⠀⠌⠠⢱⡟⣼⠿⠛⣡⠁⠀⠀⠀⠀⠀⠃⢨⣇⣿⣿⣿⣿⣿⡿⢋⣾⣯"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⢀⣄⠈⢻⣿⣷⣾⣭⣛⣻⣧⣀⣛⣨⣴⣾⣿⣷⣆⠀⠀⠀⠀⠀⠀⠀⠀⠩⡙⠛⠋⠁⠈⠙⠛⠉"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⢾⣿⠇⠈⣿⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⡟⢻⡆⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠁⠀⠀⠈⠻⢿⣿⣿⣿⡇⣿⣿⣿⣿⡿⢋⢠⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣄"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⣀⡀⢸⣦⡒⠨⠛⠿⣷⡹⣿⣟⣫⣬⣭⣼⣿⣿⣷⣄⣀⣀⣀⣀⣀⣀⣀⣈⣭⣥⣿⣿⣿⣿"
+	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢘⣿⣧⣀⣻⣿⣦⣽⣿⣿⡷⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+	
+%.o: %.c
+	@printf "$(LBLUE)[Compilation]$(RESET) In progress... $(GREEN)$<" && \
+	$(CC) $(CFLAGS) -I$(HEADERS) -c $< -o $@ && \
+	printf "\r$(LBLUE)[Compilation]$(RESET) Completed   ... $(GREEN)$<" && \
+	printf " $(LBLUE)[$(RESET)$(CC)$(LBLUE)/]$(RESET)\n"
+
+bonus :  ${BONUS_NAME}
+
+${BONUS_NAME} : $(BONUS_OBJS)
+	@make -C $(LIBFTDIR)
+	@$(CC) $(CFLAGS) -I$(HEADERS) -o ${BONUS_NAME} $(BONUS_OBJS) -L ${LIBFTDIR} -lft
 	@printf "$(BLUE)\n\n\n"
 	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢟⣛⣭⣵⣶⣶⣬⣭⣭⣭⣝⡛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
 	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣫⣵⣾⣿⣿⣿⣿⣿⣿⣿⡿⣏⢻⣟⢿⣷⣬⡙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
@@ -53,19 +102,6 @@ all: $(NAME)
 	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⣀⡀⢸⣦⡒⠨⠛⠿⣷⡹⣿⣟⣫⣬⣭⣼⣿⣿⣷⣄⣀⣀⣀⣀⣀⣀⣀⣈⣭⣥⣿⣿⣿⣿"
 	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢘⣿⣧⣀⣻⣿⣦⣽⣿⣿⡷⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
 
-makelibft:
-	@cd $(LIBFTDIR) && make
-
-$(NAME): makelibft $(OBJS)
-	@$(CC) $(CFLAGS) -I$(HEADERS) -o $@ $(OBJS) -L ${LIBFTDIR} -lft  
-	
-%.o: %.c
-	@printf "$(LBLUE)[Compilation]$(RESET) In progress... $(GREEN)$<" && \
-	$(CC) $(CFLAGS) -I$(HEADERS) -c $< -o $@ && \
-	printf "\r$(LBLUE)[Compilation]$(RESET) Completed   ... $(GREEN)$<" && \
-	printf " $(LBLUE)[$(RESET)$(CC)$(LBLUE)/]$(RESET)\n"
-
-
 clean:
 	@cd $(LIBFTDIR) && make clean
 	@for obj in $(OBJS); do \
@@ -74,13 +110,20 @@ clean:
 		rm -f $$obj && \
 		printf "\r"; \
 	done
+	@for obj in $(BONUS_OBJS); do \
+		printf "$(RED)Cleaning Libft...  Removing $$obj... " && \
+		sleep 0.01 && \
+		rm -f $$obj && \
+		printf "\r"; \
+	done
+
 	@printf "                                                      \r$(GREEN)push_swap is Clean\n$(RESET)"
 
 	
 fclean: clean
 	@cd $(LIBFTDIR) && make fclean
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(BONUS_NAME) ${BONUS_NAME}
 	
 re: fclean all
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean re bonus
