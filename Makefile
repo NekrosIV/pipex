@@ -5,8 +5,8 @@ CC = cc
 CFLAGS = -g3
 LIBFTDIR = ./libft
 
-SRCS = ./src/pipex.c
-BONUS_SRCS = bonus/pipex_bonus.c 
+SRCS = ./src/pipex.c ./src/pipex_utils.c
+BONUS_SRCS = bonus/pipex_bonus.c ./src/pipex_utils.c bonus/pipex_bonus_utils.c
 OBJS = $(SRCS:.c=.o)
 BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
