@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:21:16 by kasingh           #+#    #+#             */
-/*   Updated: 2024/02/08 17:28:39 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/08 17:45:17 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 ligne sur un descripteur de fichier */
 void	ft_putendl_fd(char *s, int fd)
 {
-	write(fd, s, ft_strlen(s));
-	write(fd, "\n", 1);
+	ft_putstr_fd(s, fd);
+	ft_putstr_fd("\n", fd);
 }
 
 // #include <fcntl.h>
