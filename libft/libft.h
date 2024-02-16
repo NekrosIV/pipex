@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 11:05:46 by kasingh           #+#    #+#             */
-/*   Updated: 2024/01/25 17:06:47 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/15 18:01:21 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
 
 size_t				ft_strlcat(char *dest, const char *src, size_t size);
 size_t				ft_strlcpy(char *dest, const char *src, size_t size);
@@ -73,5 +77,9 @@ int					ft_print_p(unsigned long int n);
 int					ft_print_int(int nbr);
 int					ft_print_unsigned_int(unsigned int n, int len);
 int					ft_putnbr_base_16(unsigned long int n, char *base, int len);
+
+char				*get_next_line(int fd);
+char				*ft_strdup_gnl(const char *src);
+char				*ft_strchr_gnl(const char *str, int c);
 
 #endif

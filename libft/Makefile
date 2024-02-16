@@ -15,7 +15,8 @@ ft_strnstr.c ft_atoi.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c ft_strtr
 ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_strmapi.c ft_striteri.c \
 ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c \
 ft_lstiter.c ft_lstmap.c\
-ft_printf.c ft_print_char.c ft_print_str.c ft_print_p.c ft_print_int.c ft_print_unsigned_int.c ft_putnbr_base_16.c
+ft_printf.c ft_print_char.c ft_print_str.c ft_print_p.c ft_print_int.c ft_print_unsigned_int.c ft_putnbr_base_16.c\
+get_next_line.c get_next_line_utils.c
 
 OBJS = ${SRCS:.c=.o}\
 
