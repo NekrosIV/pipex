@@ -6,7 +6,7 @@
 /*   By: kasingh <kasingh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 14:56:27 by kasingh           #+#    #+#             */
-/*   Updated: 2024/02/16 13:33:13 by kasingh          ###   ########.fr       */
+/*   Updated: 2024/02/19 14:12:42 by kasingh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	main(int ac, char **av, char **env)
 	if (pid == 0)
 		child_in(pipe_fd, av, env, flag);
 	close(pipe_fd[1]);
-	if (ac > 5 && ac_loop(av, env, ac, pipe_fd) == -1)
+	if (ac > 6 && ac_loop(av, env, ac, pipe_fd) == -1)
 		return (-1);
 	pid = fork();
 	if (pid == -1)
